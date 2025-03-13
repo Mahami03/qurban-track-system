@@ -27,6 +27,12 @@
         sidebarOpen = !sidebarOpen;
     }
 
+    // Close sidebar and navigate on link click
+    function handleLinkClick(path) {
+        sidebarOpen = false; // Close sidebar
+        goto(path); // Navigate to the selected page
+    }
+
     const adminLinks = [
         { name: "Dashboard", path: "/admin", icon: "🏠" },
         { name: "Donors", path: "/admin/donors", icon: "👥" },
@@ -46,7 +52,9 @@
             <aside
                 class="{sidebarOpen
                     ? 'block'
-                    : 'hidden'} md:block w-full md:w-64 bg-indigo-700 text-white dark:bg-indigo-900 flex-shrink-0 shadow-lg fixed md:static top-0 left-0 h-full z-20"
+                    : 'hidden'} md:block w-full md:w-64 bg-indigo-700 text-white dark:bg-indigo-900 flex-shrink-0 shadow-lg fixed md:static top-0 left-0 h-full z-20 transition-transform duration-300 {sidebarOpen
+                    ? 'translate-x-0'
+                    : '-translate-x-full'} md:translate-x-0"
             >
                 <div class="p-4 md:p-6 flex items-center justify-between">
                     <h1
@@ -77,9 +85,10 @@
                     <ul>
                         {#each adminLinks as link}
                             <li>
-                                <a
-                                    href={link.path}
-                                    class="flex items-center gap-2 md:gap-3 py-2 md:py-3 px-4 md:px-6 hover:bg-indigo-800 dark:hover:bg-indigo-700 transition-colors duration-200 {$page
+                                <!-- Use button instead of a tag for custom navigation -->
+                                <button
+                                    on:click={() => handleLinkClick(link.path)}
+                                    class="w-full flex items-center gap-2 md:gap-3 py-2 md:py-3 px-4 md:px-6 hover:bg-indigo-800 dark:hover:bg-indigo-700 transition-colors duration-200 text-left {$page
                                         .url.pathname === link.path
                                         ? 'bg-indigo-800 dark:bg-indigo-700'
                                         : ''}"
@@ -90,7 +99,7 @@
                                     <span class="text-sm md:text-base"
                                         >{link.name}</span
                                     >
-                                </a>
+                                </button>
                             </li>
                         {/each}
                     </ul>
