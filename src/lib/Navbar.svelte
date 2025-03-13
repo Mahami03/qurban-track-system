@@ -7,6 +7,7 @@
 
     export let darkMode;
     export let toggleDarkMode;
+    export let toggleSidebar; // Passed from layout
 
     function logout() {
         signOut(auth);
@@ -19,10 +20,34 @@
 <header
     class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center"
 >
-    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-        {#if $isAdmin && showSidebar}Admin Panel{:else}Donor Portal{/if}
-    </h2>
-    <div class="flex gap-4">
+    <div class="flex items-center gap-3">
+        {#if toggleSidebar}
+            <button
+                on:click={toggleSidebar}
+                class="md:hidden text-gray-700 dark:text-gray-200 focus:outline-none"
+            >
+                <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"
+                    />
+                </svg>
+            </button>
+        {/if}
+        <h2
+            class="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200"
+        >
+            {#if $isAdmin && showSidebar}Admin Panel{:else}Donor Portal{/if}
+        </h2>
+    </div>
+    <div class="flex gap-2 md:gap-4">
         <button
             on:click={toggleDarkMode}
             class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -30,8 +55,7 @@
         >
             {#if darkMode}
                 <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6 text-gray-700 dark:text-gray-200"
+                    class="h-5 w-5 md:h-6 md:w-6 text-gray-700 dark:text-gray-200"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -45,8 +69,7 @@
                 </svg>
             {:else}
                 <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6 text-gray-700 dark:text-gray-200"
+                    class="h-5 w-5 md:h-6 md:w-6 text-gray-700 dark:text-gray-200"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -60,6 +83,10 @@
                 </svg>
             {/if}
         </button>
-        <button on:click={logout} class="btn btn-danger">Logout</button>
+        <button
+            on:click={logout}
+            class="btn btn-danger text-sm md:text-base px-3 py-1 md:px-4 md:py-2"
+            >Logout</button
+        >
     </div>
 </header>
